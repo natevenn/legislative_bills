@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161204162010) do
+ActiveRecord::Schema.define(version: 20161204163100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actions", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bill_actions", force: :cascade do |t|
+    t.integer  "bill_id"
+    t.integer  "action_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "bill_actions", ["action_id"], name: "index_bill_actions_on_action_id", using: :btree
+  add_index "bill_actions", ["bill_id"], name: "index_bill_actions_on_bill_id", using: :btree
 
   create_table "bill_sponsors", force: :cascade do |t|
     t.integer  "bill_id"
@@ -50,6 +66,8 @@ ActiveRecord::Schema.define(version: 20161204162010) do
 
   add_index "sponsors", ["party_affiliation_id"], name: "index_sponsors_on_party_affiliation_id", using: :btree
 
+  add_foreign_key "bill_actions", "actions"
+  add_foreign_key "bill_actions", "bills"
   add_foreign_key "bill_sponsors", "bills"
   add_foreign_key "bill_sponsors", "sponsors"
   add_foreign_key "sponsors", "party_affiliations"
