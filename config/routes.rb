@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'bills_updates/index'
+
   get 'home/index'
 
   resources :bills
