@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161204163100) do
+ActiveRecord::Schema.define(version: 20161204164038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 20161204163100) do
   add_index "bill_actions", ["action_id"], name: "index_bill_actions_on_action_id", using: :btree
   add_index "bill_actions", ["bill_id"], name: "index_bill_actions_on_bill_id", using: :btree
 
+  create_table "bill_categories", force: :cascade do |t|
+    t.integer  "bill_id"
+    t.integer  "category_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "bill_categories", ["bill_id"], name: "index_bill_categories_on_bill_id", using: :btree
+  add_index "bill_categories", ["category_id"], name: "index_bill_categories_on_category_id", using: :btree
+
   create_table "bill_sponsors", force: :cascade do |t|
     t.integer  "bill_id"
     t.integer  "sponsor_id"
@@ -45,9 +55,18 @@ ActiveRecord::Schema.define(version: 20161204163100) do
   create_table "bills", force: :cascade do |t|
     t.text     "title"
     t.text     "description"
-    t.string   "state"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "state_id"
+  end
+
+  add_index "bills", ["state_id"], name: "index_bills_on_state_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "classification"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "party_affiliations", force: :cascade do |t|
@@ -66,9 +85,18 @@ ActiveRecord::Schema.define(version: 20161204163100) do
 
   add_index "sponsors", ["party_affiliation_id"], name: "index_sponsors_on_party_affiliation_id", using: :btree
 
+  create_table "states", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "bill_actions", "actions"
   add_foreign_key "bill_actions", "bills"
+  add_foreign_key "bill_categories", "bills"
+  add_foreign_key "bill_categories", "categories"
   add_foreign_key "bill_sponsors", "bills"
   add_foreign_key "bill_sponsors", "sponsors"
+  add_foreign_key "bills", "states"
   add_foreign_key "sponsors", "party_affiliations"
 end
