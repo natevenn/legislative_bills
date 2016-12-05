@@ -46,8 +46,9 @@ class Bill < ActiveRecord::Base
 
   def update_with_associations(params)
     #find out what has changes i.e was it an action, category, new sponsor
-    # send object to the appropriate model to be updated
+    # send object to the appropriate model to be updated or created
     # update the appropriate object by scoping from bill to that object
+    # if update to the bill was a new action or new category send email
     # add bill.id to the audit associated with the object that was updated
     # if update success, return true
   end

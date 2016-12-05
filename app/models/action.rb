@@ -3,4 +3,5 @@ class Action < ActiveRecord::Base
   has_many :bills, through: :bill_actions
 
   validates :name, presence: true
+
 end
