@@ -1,11 +1,11 @@
 class BillsController < ApplicationController
   def new
     @bill = Bill.new
-    @state = State.new
-    @action = Action.new
-    @category = Category.new
+    @state = State.all
+    @action = Action.all
+    @category = Category.all
     @sponsor = Sponsor.new
-    @party_affiliation = PartyAffiliation.new
+    @party_affiliation = PartyAffiliation.all
   end
 
   def create

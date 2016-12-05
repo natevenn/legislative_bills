@@ -27,21 +27,21 @@ class Bill < ActiveRecord::Base
   def self.associate_with_action(bill, params)
     #for multiple actions iterate over the array of actions
     #refactor this logic to the action model
-    bill.actions.create(params[:action])
+    bill << Action.find_or_create_by(params[:action])
   end
 
   def self.associate_with_sponsor(bill, params)
     #for multiple sponsors iterate over the array of sposnors
     #refactor this logic to the sponsor model
-    party = PartyAffiliation.create(params[:party_affiliation])
-    sponsor = bill.sponsors.create(params[:sponsor])
+    party = PartyAffiliation.find(params[:party_affiliation])
+    sponsor = bill << Sponsors.find_or_create(params[:sponsor])
     sponsor.update(party_affiliation_id: party.id)
   end
 
   def self.associate_with_categories(bill, params)
     #for multiple categores iterate over the array of categores
     #refactor this logic to the categories model
-    bill.categories.create(params[:category])
+    bill << Categories.find_or_create_by(params[:category])
   end
 
   def update_with_associations(params)
